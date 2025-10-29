@@ -1,7 +1,7 @@
 ﻿
 namespace Fund.Core.Models
 {
-    public class Transaction
+    public class Category
     {
         public long Id { get; set; }
         public string Title { get; set; } = string.Empty;
