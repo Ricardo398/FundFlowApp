@@ -48,7 +48,7 @@ namespace Fund.Api.Handlers
             try
             {
                 await context.SaveChangesAsync();
-                return new Response<Category?>(data: null, message: "Categoria excluída com sucesso!");
+                return new Response<Category?>(data: category, message: "Categoria excluída com sucesso!");
 
             }
             catch (Exception ex)
