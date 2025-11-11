@@ -33,7 +33,7 @@ namespace Fund.Api.Handlers
                 await context.SaveChangesAsync();
                 return new Response<Transaction?>(transaction, code: 201, message: "Transação criada com sucesso.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Transaction?>(data: null, code: 500, message: "Não foi possível criar sua transação.");
             }
@@ -56,7 +56,7 @@ namespace Fund.Api.Handlers
                 return new Response<Transaction?>(data: transaction, message: "Sua transação foi deletada com sucesso!");
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Transaction?>(data: null, code: 500, message: "Não foi possível deletar sua transação.");
             }
@@ -75,7 +75,7 @@ namespace Fund.Api.Handlers
                 : new Response<Transaction?>(data: transaction, code: 200, message: "Transação recuperada com sucesso!");
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Transaction?>(data: null, code: 500, message: "Não foi possível recuperar sua transação.");
             }
@@ -93,7 +93,7 @@ namespace Fund.Api.Handlers
             .OrderBy(x => x.PaidOrReceivedAt);
 
             var transactions = await query
-                .Skip(request.PageNumber - 1 * request.PageSize)
+                .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
 
@@ -141,7 +141,7 @@ namespace Fund.Api.Handlers
                 await context.SaveChangesAsync();
                 return new Response<Transaction?>(data: transaction, code: 201, message: "Transação atualizada com sucesso.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Transaction?>(data: null, code: 500, message: "Não foi possível atualizar sua transação.");
             }

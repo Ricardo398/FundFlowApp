@@ -1,6 +1,38 @@
-﻿namespace Fund.Api.Endpoints.Categories
+﻿using Fund.Api.Common.Api;
+using Fund.Core;
+using Fund.Core.Handlers;
+using Fund.Core.Models;
+using Fund.Core.Requests.Categories;
+using Fund.Core.Responses;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Fund.Api.Endpoints.Categories
 {
-    public class GetAllCategoriesEndpoint
+    public class GetAllCategoriesEndpoint : IEndpoint
     {
+        public static void Map(IEndpointRouteBuilder app)
+        => app.MapGet("/", HandleAsync)
+            .WithName("Categories: Get All")
+            .WithSummary("Get all categories.")
+            .WithDescription("Get all categories.")
+            .WithOrder(5)
+            .Produces<PagedResponse<List<Category?>>>();
+        private static async Task<IResult> HandleAsync(
+            ICategoryHandler handler,
+            [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
+            [FromQuery] int pageSize = Configuration.DefaultPageSize)
+        {
+            var request = new GetAllCategoriesRequest
+            {
+                UserId = ApiConfiguration.UserId,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+            };
+
+            var result = await handler.GetAllAsync(request);
+            return result.IsSuccess
+              ? TypedResults.Ok(result)
+              : TypedResults.BadRequest(result);
+        }
     }
 }

@@ -26,9 +26,9 @@ namespace Fund.Api.Handlers
             {
                 await context.SaveChangesAsync();
 
-                return new Response<Category?>(data: null, code: 201, message: "Categoria criada com sucesso!");
+                return new Response<Category?>(category, code: 201, message: "Categoria criada com sucesso!");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Category?>(data: null, code: 500, message: "Não foi possível criar uma categoria.");
             }
@@ -51,7 +51,7 @@ namespace Fund.Api.Handlers
                 return new Response<Category?>(data: category, message: "Categoria excluída com sucesso!");
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response<Category?>(data: null, code: 500, message: "Não foi possível excluir a categoria.");
             }
@@ -63,7 +63,7 @@ namespace Fund.Api.Handlers
             var query = context.Categories.AsNoTracking().Where(x => x.UserId == request.UserId).OrderBy(x => x.Title);
 
             var categories = await query
-                .Skip(request.PageNumber - 1 * request.PageSize)
+                .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
 
@@ -94,9 +94,9 @@ namespace Fund.Api.Handlers
                 ? new Response<Category?>(data: null, code: 404, message: "Categoria não encontrada.")
                 : new Response<Category?>(category);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new Response<Category>(data: null, code: 500, message: "Não foi possível recuperar a categoria.");
+                return new Response<Category?>(data: null, code: 500, message: "Não foi possível recuperar a categoria.");
             }
 
         }
@@ -120,9 +120,9 @@ namespace Fund.Api.Handlers
 
                 return new Response<Category?>(category, message: "Categoria atualizada com sucesso!");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new Response<Category>(data: null, code: 500, message: "Não foi possível atualizar a categoria.");
+                return new Response<Category?>(data: null, code: 500, message: "Não foi possível atualizar a categoria.");
             }
         }
     }

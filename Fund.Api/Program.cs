@@ -1,20 +1,24 @@
-using Fund.Api.Data;
-using Fund.Api.Handlers;
-using Fund.Core.Handlers;
-using Microsoft.EntityFrameworkCore;
+using Fund.Api;
+using Fund.Api.Common.Api;
+using Fund.Api.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddConfiguration();
+builder.AddDataContext();
+builder.AddCorsOrigin();
+builder.AddDocumentation();
+builder.AddServices();
 
-const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=FundFlow;Trusted_Connection=true;MultipleActiveResultSets=true";
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
 
-builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
-builder.Services.AddTransient<ITransactionHandler, TransactionHandler>();
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.ConfigureDevEnviroment();
+}
 
-app.MapGet("/", () => "Hello World!");
+app.UseCors(ApiConfiguration.CorsPolicyName);
+app.MapEndpoints();
 
 app.Run();

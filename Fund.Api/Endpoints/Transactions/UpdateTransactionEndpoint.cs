@@ -1,23 +1,24 @@
 ﻿using Fund.Api.Common.Api;
 using Fund.Core.Handlers;
 using Fund.Core.Models;
-using Fund.Core.Requests.Categories;
+using Fund.Core.Requests.Transactions;
 using Fund.Core.Responses;
 
-namespace Fund.Api.Endpoints.Categories
+namespace Fund.Api.Endpoints.Transactions
 {
-    public class UpdateCategoryEndpoint : IEndpoint
+    public class UpdateTransactionEndpoint : IEndpoint
     {
         public static void Map(IEndpointRouteBuilder app)
             => app.MapPut("/{id}", HandleAsync)
-            .WithName("Categories: Update")
-            .WithSummary("Update a category")
-            .WithDescription("Update a category")
+            .WithName("Transactions: Update")
+            .WithSummary("Update a transaction")
+            .WithDescription("Update a transaction")
             .WithOrder(2)
-            .Produces<Response<Category?>>();
+            .Produces<Response<Transaction?>>();
+
         private static async Task<IResult> HandleAsync(
-            ICategoryHandler handler,
-            UpdateCategoryRequest request,
+            ITransactionHandler handler,
+            UpdateTransactionRequest request,
             long id)
         {
             request.UserId = ApiConfiguration.UserId;
