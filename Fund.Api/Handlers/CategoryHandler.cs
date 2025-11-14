@@ -13,6 +13,7 @@ namespace Fund.Api.Handlers
     {
         public async Task<Response<Category?>> CreateAsync(CreateCategoryRequest request)
         {
+            await Task.Delay(5000);
             var category = new Category
             {
                 UserId = request.UserId,
@@ -77,7 +78,7 @@ namespace Fund.Api.Handlers
                     request.PageNumber,
                     request.PageSize);
             }
-            catch 
+            catch
             {
                 return new PagedResponse<List<Category>?>(data: null, code: 500, message: "Não foi possível recuperar todas as categorias.");
             }
